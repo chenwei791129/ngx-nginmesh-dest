@@ -19,7 +19,7 @@
 
 typedef struct {
     ngx_flag_t      enabled;
-} ngx_http_nginmesh_loc_conf_t;
+} ngx_http_nginmesh_srv_conf_t;
 
 typedef struct {
     ngx_str_t       dest;
@@ -33,8 +33,8 @@ static ngx_int_t ngx_http_nginmesh_handler(ngx_http_request_t *s);
 static ngx_int_t ngx_http_nginmesh_dest_variable(ngx_http_request_t *s,ngx_http_variable_value_t *v, uintptr_t data);
 static ngx_int_t ngx_http_ngin_add_variables(ngx_conf_t *cf);
 static ngx_int_t ngx_http_ngin_mesh_init(ngx_conf_t *cf);
-static void *ngx_http_nginmesh_create_loc_conf(ngx_conf_t *cf);
-static char *ngx_http_nginmesh_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child);
+static void *ngx_http_nginmesh_create_srv_conf(ngx_conf_t *cf);
+static char *ngx_http_nginmesh_merge_srv_conf(ngx_conf_t *cf, void *parent, void *child);
 
 
 
@@ -49,7 +49,7 @@ static ngx_command_t ngx_http_mesh_commands[] = {
       NGX_HTTP_MAIN_CONF | NGX_HTTP_SRV_CONF | NGX_CONF_FLAG,
       ngx_conf_set_flag_slot,     // do custom config
       NGX_HTTP_SRV_CONF_OFFSET,
-      offsetof(ngx_http_nginmesh_loc_conf_t, enabled),
+      offsetof(ngx_http_nginmesh_srv_conf_t, enabled),
       NULL
     },
     ngx_null_command /* command termination */
@@ -64,10 +64,10 @@ static ngx_http_module_t ngx_http_mesh_module_ctx = {
     ngx_http_ngin_mesh_init, /* postconfiguration */
     NULL,
     NULL, /* init main configuration */
-    NULL, /* create server configuration */
-    NULL, /* create server configuration */
-    ngx_http_nginmesh_create_loc_conf, /* create location configuration */
-    ngx_http_nginmesh_merge_loc_conf /* merge location configuration */
+    ngx_http_nginmesh_create_srv_conf, /* create server configuration */
+    ngx_http_nginmesh_merge_srv_conf, /* merge server configuration */
+    NULL, /* create location configuration */
+    NULL /* merge location configuration */
 };
 
 /* Module definition. */
@@ -96,13 +96,13 @@ static ngx_http_variable_t  ngx_http_nginmesh_vars[] = {
 
 
 
-static void *ngx_http_nginmesh_create_loc_conf(ngx_conf_t *cf)
+static void *ngx_http_nginmesh_create_srv_conf(ngx_conf_t *cf)
 {
-    ngx_http_nginmesh_loc_conf_t  *conf;
+    ngx_http_nginmesh_srv_conf_t  *conf;
 
     ngx_log_debug(NGX_LOG_DEBUG_EVENT, ngx_cycle->log, 0, "nginmeshdest create serv config");
 
-    conf = ngx_pcalloc(cf->pool, sizeof(ngx_http_nginmesh_loc_conf_t));
+    conf = ngx_pcalloc(cf->pool, sizeof(ngx_http_nginmesh_srv_conf_t));
     if (conf == NULL) {
         return NULL;
     }
@@ -113,13 +113,13 @@ static void *ngx_http_nginmesh_create_loc_conf(ngx_conf_t *cf)
 }
 
 
-static char *ngx_http_nginmesh_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child)
+static char *ngx_http_nginmesh_merge_srv_conf(ngx_conf_t *cf, void *parent, void *child)
 {
 
     ngx_log_debug(NGX_LOG_DEBUG_EVENT, ngx_cycle->log, 0, "nginmeshdest merge serv config");
 
-    ngx_http_nginmesh_loc_conf_t *prev = parent;
-    ngx_http_nginmesh_loc_conf_t *conf = child;
+    ngx_http_nginmesh_srv_conf_t *prev = parent;
+    ngx_http_nginmesh_srv_conf_t *conf = child;
 
     ngx_conf_merge_value(conf->enabled, prev->enabled, 0);
 
@@ -132,7 +132,7 @@ static char *ngx_http_nginmesh_merge_loc_conf(ngx_conf_t *cf, void *parent, void
 static ngx_int_t ngx_http_nginmesh_handler(ngx_http_request_t *s)
 {
 
-    ngx_http_nginmesh_loc_conf_t      *meshcf;
+    ngx_http_nginmesh_srv_conf_t      *meshcf;
     struct sockaddr_storage             org_src_addr;
     socklen_t                           org_src_addr_len;
     ngx_connection_t                    *c;
