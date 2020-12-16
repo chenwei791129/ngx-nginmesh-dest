@@ -3,7 +3,7 @@
  * @author Sehyo Chang <sehyo@nginx.com>
  * @date   Nov 6, 2017
  *
- * @brief  Nginx stream dest module for Nginx.
+ * @brief  Nginx http dest module for Nginx.
  *
  * @section LICENSE
  *
@@ -143,7 +143,7 @@ static ngx_int_t ngx_http_nginmesh_handler(ngx_http_request_t *s)
 
     c = s->connection;
 
-	ngx_log_debug(NGX_LOG_DEBUG_HTTP,  s->connection->log, 0,"nginmesh stream handler invoked");
+	ngx_log_debug(NGX_LOG_DEBUG_HTTP,  s->connection->log, 0,"nginmesh http handler invoked");
 
 
     meshcf = ngx_http_get_module_srv_conf(s, ngx_http_nginmesh_dest_module);
@@ -154,7 +154,7 @@ static ngx_int_t ngx_http_nginmesh_handler(ngx_http_request_t *s)
     }
 
     if (c->type != SOCK_HTTP) {
-        ngx_log_debug(NGX_LOG_DEBUG_HTTP, s->connection->log, 0, "nginmesh not sock stream  declined");
+        ngx_log_debug(NGX_LOG_DEBUG_HTTP, s->connection->log, 0, "nginmesh not sock http  declined");
         return NGX_DECLINED;
     }
 
