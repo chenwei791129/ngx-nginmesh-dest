@@ -158,10 +158,10 @@ static ngx_int_t ngx_http_nginmesh_handler(ngx_http_request_t *s)
     //     return NGX_DECLINED;
     // }
 
-    if (c->buffer == NULL) {
-        ngx_log_debug(NGX_LOG_DEBUG_HTTP, s->connection->log, 0, "nginmesh no buffer, again");
-        return NGX_AGAIN;
-    }
+    // if (c->buffer == NULL) {
+    //     ngx_log_debug(NGX_LOG_DEBUG_HTTP, s->connection->log, 0, "nginmesh no buffer, again");
+    //     return NGX_AGAIN;
+    // }
 
     ctx = ngx_http_get_module_ctx(s, ngx_http_nginmesh_dest_module);
 
