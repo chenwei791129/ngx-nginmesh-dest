@@ -64,9 +64,10 @@ static ngx_http_module_t ngx_http_mesh_module_ctx = {
     ngx_http_ngin_mesh_init, /* postconfiguration */
     NULL,
     NULL, /* init main configuration */
+    NULL, /* create server configuration */
+    NULL, /* create server configuration */
     ngx_http_nginmesh_create_loc_conf, /* create location configuration */
     ngx_http_nginmesh_merge_loc_conf /* merge location configuration */
-
 };
 
 /* Module definition. */
