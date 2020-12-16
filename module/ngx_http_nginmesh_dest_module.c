@@ -29,8 +29,8 @@ typedef struct {
 
 
 
-static ngx_int_t ngx_http_nginmesh_handler(ngx_http_session_t *s);
-static ngx_int_t ngx_http_nginmesh_dest_variable(ngx_http_session_t *s,ngx_http_variable_value_t *v, uintptr_t data);
+static ngx_int_t ngx_http_nginmesh_handler(ngx_http_request_t *s);
+static ngx_int_t ngx_http_nginmesh_dest_variable(ngx_http_request_t *s,ngx_http_variable_value_t *v, uintptr_t data);
 static ngx_int_t ngx_http_ngin_add_variables(ngx_conf_t *cf);
 static ngx_int_t ngx_http_ngin_mesh_init(ngx_conf_t *cf);
 static void *ngx_http_nginmesh_create_srv_conf(ngx_conf_t *cf);
@@ -128,7 +128,7 @@ static char *ngx_http_nginmesh_merge_srv_conf(ngx_conf_t *cf, void *parent, void
 
 
 
-static ngx_int_t ngx_http_nginmesh_handler(ngx_http_session_t *s)
+static ngx_int_t ngx_http_nginmesh_handler(ngx_http_request_t *s)
 {
 
     ngx_http_nginmesh_srv_conf_t      *meshcf;
@@ -228,7 +228,7 @@ static ngx_int_t ngx_http_nginmesh_handler(ngx_http_session_t *s)
 }
 
 // assign variable from ctx
-static ngx_int_t ngx_http_nginmesh_dest_variable(ngx_http_session_t *s,
+static ngx_int_t ngx_http_nginmesh_dest_variable(ngx_http_request_t *s,
     ngx_variable_value_t *v, uintptr_t data)
 {
     ngx_http_nginmesh_ctx_t  *ctx;
