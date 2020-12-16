@@ -153,10 +153,11 @@ static ngx_int_t ngx_http_nginmesh_handler(ngx_http_request_t *s)
         return NGX_DECLINED;
     }
 
-    // if (c->type != SOCK_HTTP) {
-    //     ngx_log_debug(NGX_LOG_DEBUG_HTTP, s->connection->log, 0, "nginmesh not sock http  declined");
-    //     return NGX_DECLINED;
-    // }
+    // SOCK_DGRAM mean UDP, SOCK_STREAM mean TCP
+    if (c->type != SOCK_STREAM) {
+        ngx_log_debug(NGX_LOG_DEBUG_HTTP, s->connection->log, 0, "nginmesh not tcp, declined");
+        return NGX_DECLINED;
+    }
 
     // if (c->buffer == NULL) {
     //     ngx_log_debug(NGX_LOG_DEBUG_HTTP, s->connection->log, 0, "nginmesh no buffer, again");
