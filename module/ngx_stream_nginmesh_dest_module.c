@@ -142,30 +142,30 @@ static ngx_int_t ngx_stream_nginmesh_handler(ngx_stream_session_t *s)
 
     c = s->connection;
 
-	ngx_log_debug(NGX_LOG_DEBUG_STREAM,  s->connection->log, 0,"nginmesh stream handler invoked");
+	ngx_log_debug(NGX_LOG_DEBUG_STREAM,  c->log, 0,"nginmesh stream handler invoked");
 
 
     meshcf = ngx_stream_get_module_srv_conf(s, ngx_stream_nginmesh_dest_module);
 
     if (!meshcf->enabled) {
-        ngx_log_debug(NGX_LOG_DEBUG_STREAM, s->connection->log, 0, "nginmesh not enabled, declined");
+        ngx_log_debug(NGX_LOG_DEBUG_STREAM, c->log, 0, "nginmesh not enabled, declined");
         return NGX_DECLINED;
     }
 
     if (c->type != SOCK_STREAM) {
-        ngx_log_debug(NGX_LOG_DEBUG_STREAM, s->connection->log, 0, "nginmesh not sock stream  declined");
+        ngx_log_debug(NGX_LOG_DEBUG_STREAM, c->log, 0, "nginmesh not sock stream  declined");
         return NGX_DECLINED;
     }
 
     if (c->buffer == NULL) {
-        ngx_log_debug(NGX_LOG_DEBUG_STREAM, s->connection->log, 0, "nginmesh no buffer, again");
+        ngx_log_debug(NGX_LOG_DEBUG_STREAM, c->log, 0, "nginmesh no buffer, again");
         return NGX_AGAIN;
     }
 
     ctx = ngx_stream_get_module_ctx(s, ngx_stream_nginmesh_dest_module);
 
     if (ctx == NULL) {
-         ngx_log_debug(NGX_LOG_DEBUG_STREAM, s->connection->log, 0, "nginmesh creating new context");
+         ngx_log_debug(NGX_LOG_DEBUG_STREAM, c->log, 0, "nginmesh creating new context");
         ctx = ngx_pcalloc(c->pool, sizeof(ngx_stream_nginmesh_ctx_t));
         if (ctx == NULL) {
             return NGX_ERROR;
@@ -178,31 +178,31 @@ static ngx_int_t ngx_stream_nginmesh_handler(ngx_stream_session_t *s)
 
 
   //  len = ngx_sock_ntop(c->sockaddr, sizeof(struct sockaddr_in),text,c->socklen,1);
-   ngx_log_debug2(NGX_LOG_DEBUG_STREAM, s->connection->log, 0, "module original ip address: %*s",c->addr_text.len,c->addr_text.data);
+   ngx_log_debug2(NGX_LOG_DEBUG_STREAM, c->log, 0, "module original ip address: %*s",c->addr_text.len,c->addr_text.data);
 
 
     ngx_memzero(&org_src_addr, sizeof(struct sockaddr));
      org_src_addr_len =  sizeof(struct sockaddr);
     if(getsockopt ( c->fd, SOL_IP, SO_ORIGINAL_DST, &org_src_addr,&org_src_addr_len) == -1) {
-         ngx_log_error(NGX_LOG_ALERT, s->connection->log, ngx_socket_errno,
+         ngx_log_error(NGX_LOG_ALERT, c->log, ngx_socket_errno,
                                       "failed to get original ip address");
          return NGX_DECLINED;
 
     } else {
 
-        ngx_log_debug1(NGX_LOG_DEBUG_STREAM, s->connection->log,0, "ip address length %d",org_src_addr_len);
+        ngx_log_debug1(NGX_LOG_DEBUG_STREAM, c->log,0, "ip address length %d",org_src_addr_len);
 
         if(org_src_addr.ss_family == AF_INET )  {
-           ngx_log_debug(NGX_LOG_DEBUG_STREAM, s->connection->log, 0, "address is is INET format");
+           ngx_log_debug(NGX_LOG_DEBUG_STREAM, c->log, 0, "address is is INET format");
            struct sockaddr_in *addr_in = (struct sockaddr_in *)&org_src_addr;
            char *s = inet_ntoa(addr_in->sin_addr);
            int port = ntohs(addr_in->sin_port);
-           ngx_log_debug1(NGX_LOG_DEBUG_STREAM, s->connection->log, 0, "founded dest ip address: %s",s);
-           ngx_log_debug1(NGX_LOG_DEBUG_STREAM, s->connection->log,  0, "founded dest port address: %d",port);
+           ngx_log_debug1(NGX_LOG_DEBUG_STREAM, c->log, 0, "founded dest ip address: %s",s);
+           ngx_log_debug1(NGX_LOG_DEBUG_STREAM, c->log,  0, "founded dest port address: %d",port);
 
            ngx_memzero(dest_text,30);
            sprintf(dest_text,"%s:%d",s,port);
-           ngx_log_debug1(NGX_LOG_DEBUG_STREAM, s->connection->log,  0, "combined text: %s",dest_text);
+           ngx_log_debug1(NGX_LOG_DEBUG_STREAM, c->log,  0, "combined text: %s",dest_text);
            size_t dest_str_size = ngx_strlen(dest_text);
 
 
@@ -210,13 +210,13 @@ static ngx_int_t ngx_stream_nginmesh_handler(ngx_stream_session_t *s)
            ctx->dest.len = dest_str_size;
            ngx_memcpy(ctx->dest.data,dest_text,dest_str_size);
 
-           ngx_log_debug2(NGX_LOG_DEBUG_STREAM, s->connection->log,  0, "ctx dest  var %*s",ctx->dest.len,ctx->dest.data);
+           ngx_log_debug2(NGX_LOG_DEBUG_STREAM, c->log,  0, "ctx dest  var %*s",ctx->dest.len,ctx->dest.data);
 
 
            
         } else {
 
-           ngx_log_debug(NGX_LOG_DEBUG_STREAM, s->connection->log,  0, "address is is not INET format");
+           ngx_log_debug(NGX_LOG_DEBUG_STREAM, c->log,  0, "address is is not INET format");
            return NGX_DECLINED;
         }
 
