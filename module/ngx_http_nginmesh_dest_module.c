@@ -1,13 +1,10 @@
 /**
  * @file   ngx_http_nginmesh_dest_module.c
- * @author Sehyo Chang <sehyo@nginx.com>
- * @date   Nov 6, 2017
+ * @author Jeff Sun <jeff.sun@titansoft.com.sg>
+ * @date   Dec 16, 2020
  *
  * @brief  Nginx http dest module for Nginx.
  *
- * @section LICENSE
- *
- * Copyright (C) 2017 by Nginx
  *
  */
 #include <ngx_config.h>
