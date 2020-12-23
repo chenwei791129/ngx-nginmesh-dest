@@ -51,7 +51,6 @@ The following embedded variables are provided:
 
 ### nginmesh_dest
 
-| -   | - |
 | --- | --- |
 | **Syntax**  | **nginmesh_dest** \<on\|off\> |
 | **Default** | off |
