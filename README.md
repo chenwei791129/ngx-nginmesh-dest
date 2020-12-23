@@ -11,12 +11,10 @@ iptables -t nat -A PREROUTING -i eth1 -p tcp --dport 443 -j REDIRECT --to-ports 
 ## Dependencies
 
 This module uses Linux **getsockopt** socket API.  
-The installation uses Docker to build the module binary.
 
 ## Compatibility
 
 * openresty 1.19.3.1
-
 
 ## Synopsis
 
