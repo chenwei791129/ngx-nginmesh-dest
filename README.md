@@ -20,23 +20,22 @@ This module uses Linux **getsockopt** socket API.
 
 ```nginx
 
- stream   {
- 
-	 server {
-	 
-			#  use iptable to capture all outgoing traffic.  see Istio design document
-			listen 15001;
-			
-			# turn on module for this server
-			# original IP destination and port is set to variable $nginmesh_dest
-			# ex: 10.31.242.228:80
-			nginmesh_dest on;
-	
-			# variable can be used in valid config directive
-			proxy_pass $nginmesh_dest;
-		}
-		
- }	
+load_module "modules/ngx_http_nginmesh_dest_module.so";
+
+http {
+    server {
+        #  use iptable to capture all outgoing traffic.  see Istio design document
+        listen 15001;
+
+        # turn on module for this server
+        # original IP destination and port is set to variable $nginmesh_dest
+        # ex: 10.31.242.228:80
+        nginmesh_dest on;
+
+        # variable can be used in valid config directive
+        proxy_pass $nginmesh_dest;
+    }
+}
 
 ```
 
@@ -70,7 +69,7 @@ The following embedded variables are provided:
 
 2. Build the dynamic module
 
-  ```
+  ```console
   shell> curl -L "https://openresty.org/download/openresty-1.19.3.1.tar.gz" -o openresty.tar.gz \
 && tar -xzvf openresty.tar.gz \
 && rm -f openresty.tar.gz \
