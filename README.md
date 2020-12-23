@@ -63,13 +63,13 @@ The following embedded variables are provided:
 
 1. Clone the git repository
 
-  ```
+  ```bash
 foo@bar:~$ git clone https://github.com/chenwei791129/ngx-stream-nginmesh-dest.git
   ```
 
 2. Build the dynamic module
 
-  ```console
+  ```bash
 foo@bar:~$ curl -L "https://openresty.org/download/openresty-1.19.3.1.tar.gz" -o openresty.tar.gz \
 && tar -xzvf openresty.tar.gz \
 && rm -f openresty.tar.gz \
