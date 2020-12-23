@@ -64,7 +64,7 @@ The following embedded variables are provided:
 1. Clone the git repository
 
   ```bash
-foo@bar:~$ git clone https://github.com/chenwei791129/ngx-stream-nginmesh-dest.git
+foo@bar:~$ git clone https://github.com/chenwei791129/ngx-nginmesh-dest.git
   ```
 
 2. Build the dynamic module
