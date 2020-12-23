@@ -1,6 +1,6 @@
 /**
  * @file   ngx_http_nginmesh_dest_module.c
- * @author Jeff Sun <jeff.sun@titansoft.com.sg>
+ * @author AwEi <chenwei791129@livemail.tw>
  * @date   Dec 16, 2020
  *
  * @brief  Nginx http dest module for Nginx.
