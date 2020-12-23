@@ -45,7 +45,7 @@ This module uses Linux **getsockopt** socket API.
 The following embedded variables are provided:
 
 * **nginmesh_dest**
-  * Original IP address and port in the format:  <address>:<port>
+  * Original IP address and port in the format:  &gt;address&lt;:&gt;port&lt;
 
 ## Directives
 
