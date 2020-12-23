@@ -25,7 +25,7 @@ load_module "modules/ngx_http_nginmesh_dest_module.so";
 http {
     server {
         #  use iptable to capture all outgoing traffic.  see Istio design document
-        listen 15001;
+        listen 80;
 
         # turn on module for this server
         # original IP destination and port is set to variable $nginmesh_dest
