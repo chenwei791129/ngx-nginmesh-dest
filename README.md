@@ -14,6 +14,7 @@ This module uses Linux **getsockopt** socket API.
 
 ## Compatibility
 
+* nginx 1.18.0
 * openresty 1.19.3.1
 
 ## Synopsis
